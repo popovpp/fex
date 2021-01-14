@@ -13,8 +13,8 @@ from django.conf import settings
 class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    balance = models.IntegerField()
-    freeze_balanca = models.IntegerField()
+    balance = models.IntegerField(default=0)
+    freeze_balanca = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

@@ -8,21 +8,6 @@ from django.contrib.auth.models import PermissionsMixin
 import django.utils.timezone
 
 
-#class User_old(AbstractUser):
-#    username = None
-#    email = models.EmailField(_('email address'), unique=True)
-#    balance = models.PositiveIntegerField(default=0)
-#    freeze_balance = models.PositiveIntegerField(default=0)
-
-#    USERNAME_FIELD = 'email'
-#    REQUIRED_FIELDS = []
-
-#    objects = CustomUserManager()
-
-#    def __str__(self):
-#        return self.email
-
-
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True, max_length=254)
     id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')

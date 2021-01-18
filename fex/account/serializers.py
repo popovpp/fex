@@ -21,12 +21,16 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ['url', 'email', 'password', 'first_name', 'last_name', 'groups', 'is_active', 'balance', 'freeze_balance']
 
+	def create(self, *args, **kwargs):
+		user = super().create(*args, **kwargs)
+		p = user.password
+		user.set_password(p)
+		user.save()
+		return user
 
-
-class UserSerializer_1(serializers.ModelSerializer):
-
-
-	class Meta:
-		model = User
-		fields = ['url']
-		print(IsOwnerOnly)
+	def update(self, *args, **kwargs):
+		user = super().update(*args, **kwargs)
+		p = user.password
+		user.set_password(p)
+		user.save()
+		return user

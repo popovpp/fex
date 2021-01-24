@@ -23,8 +23,18 @@ class UserViewSet(viewsets.ModelViewSet):
 	
 	def get_permissions(self):
 
+		read_only_set = {'groups', 'is_active',
+				 'balance', 'freeze_balance', 'is_staff', 'date_joined', 'last_login'}
+
 		if self.request.method == 'GET':
 			self.permission_classes = [permissions.IsAuthenticated & (IsOwnerOnly | permissions.IsAdminUser), ]
 		else:
 			self.permission_classes = [IsOwnerOnly | permissions.IsAdminUser, ]
+
+		if self.request.method == 'PUT':
+			request_keys = set(self.request.data.keys())
+			if len(read_only_set.intersection(request_keys)) != 0:
+				self.permission_classes = [permissions.IsAdminUser & (~permissions.IsAuthenticated), ]
+
+
 		return super(UserViewSet, self).get_permissions()

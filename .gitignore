@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 
 /fex/__pycache__/*.py[cod]
+/fex/__pycache__/*.*
+fex/fex/__pycache__/*.*
+fex/fex/__pycache__/*.*.*
 
 # C extensions
 *.so

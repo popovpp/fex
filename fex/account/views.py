@@ -36,5 +36,10 @@ class UserViewSet(viewsets.ModelViewSet):
 			if len(read_only_set.intersection(request_keys)) != 0:
 				self.permission_classes = [permissions.IsAdminUser & (~permissions.IsAuthenticated), ]
 
+		if self.request.method == 'PATCH':
+			request_keys = set(self.request.data.keys())
+			if len(read_only_set.intersection(request_keys)) != 0:
+				self.permission_classes = [permissions.IsAdminUser & (~permissions.IsAuthenticated), ]
+
 
 		return super(UserViewSet, self).get_permissions()

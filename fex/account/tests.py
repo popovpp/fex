@@ -403,38 +403,74 @@ class UserSerializerTests(TestCase):
         response = requests.delete(cls.uri_user, headers={'Authorization':'token {}'.format(cls.token)})
 
 
-    def test_authorized_user_change_readonly_groups(self):
+    def test_put_authorized_user_change_readonly_groups(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "groups":'sellers', "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
 
-    def test_authorized_user_change_readonly_balance(self):
+    def test_put_authorized_user_change_readonly_balance(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "balance":100, "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
-    def test_authorized_user_change_readonly_freeze_balance(self):
+    def test_put_authorized_user_change_readonly_freeze_balance(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "freeze_balance":100, "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
-    def test_authorized_user_change_readonly_is_active(self):
+    def test_put_authorized_user_change_readonly_is_active(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "is_active":False, "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
-    def test_authorized_user_change_readonly_is_staff(self):
+    def test_put_authorized_user_change_readonly_is_staff(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "is_staff":False, "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
-    def test_authorized_user_change_readonly_date_joined(self):
+    def test_put_authorized_user_change_readonly_date_joined(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "date_joined":'21.12.20', "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)
 
-    def test_authorized_user_change_readonly_last_login(self):
+    def test_put_authorized_user_change_readonly_last_login(self):
         response = requests.put(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "last_login":'21.12.20', "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_groups(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "groups":'sellers', "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+
+    def test_patch_authorized_user_change_readonly_balance(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "balance":100, "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_freeze_balance(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "freeze_balance":100, "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_is_active(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "is_active":False, "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_is_staff(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "is_staff":False, "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_date_joined(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
+                    data={"email":"v13@sas.com", "password":"1", "date_joined":'21.12.20', "first_name":"Jim"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_patch_authorized_user_change_readonly_last_login(self):
+        response = requests.patch(self.uri_user, headers={'Authorization':'token {}'.format(self.token)}, 
                     data={"email":"v13@sas.com", "password":"1", "last_login":'21.12.20', "first_name":"Jim"})
         self.assertEqual(response.status_code, 403)

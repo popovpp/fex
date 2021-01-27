@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+MEDIA_ROOT = BASE_DIR + '/media_root/'
 
 SECRET_KEY = 'zh)4@9vfgc04=kz^e93q77mn36!9p1hn@@qznj%%fpa1n-z8ap'
 
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'account',
+    'advert',
 ]
 
 MIDDLEWARE = [

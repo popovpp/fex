@@ -5,8 +5,11 @@ __pycache__/
 
 /fex/__pycache__/*.py[cod]
 /fex/__pycache__/*.*
-fex/fex/__pycache__/*.*
-fex/fex/__pycache__/*.*.*
+/fex/fex/__pycache__/*.*
+/fex/fex/__pycache__/*.*.*
+/fex/advert/__pycache__/*.*.*
+/fex/advert/__pycache__/*.*
+/fex/media_root/*.*
 
 # C extensions
 *.so

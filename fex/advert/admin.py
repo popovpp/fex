@@ -24,7 +24,7 @@ class AdvertModelAdmin(admin.ModelAdmin):
 
 class ReplyModelAdmin(admin.ModelAdmin):
 	list_display = ['id', 'advert_id', 'message', 'author', 'planed_date',
-	                'price']
+	                'price', 'created', 'updated']
 	list_display_links = ['id']
 	list_filter = ['advert_id', 'author']
 	search_fields = ['advert_id', 'author']

@@ -38,7 +38,7 @@ class Advert(models.Model):
     	verbose_name_plural = 'Adverts'
 
     def __str__(self):
-        return self.title
+        return repr(self.id)
 
 
 class AdvertFile(models.Model):
@@ -64,12 +64,16 @@ class Reply(models.Model):
                           verbose_name='id')
     advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
                                   verbose_name='advert_id', default=0)
-    message = models.TextField(blank=True, verbose_name='Description')
+    message = models.TextField(blank=True, verbose_name='Message')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                verbose_name='Author')
     planed_date = models.DateTimeField(blank=True, null=True,
-                                       verbose_name='Deadline')
+                                       verbose_name='Planed date')
     price = models.PositiveIntegerField(default=0, verbose_name='Price')
+    created = models.DateTimeField(default=django.utils.timezone.now,
+                                   verbose_name='Created')
+    updated = models.DateTimeField(auto_now=False, auto_now_add=True,
+                                   verbose_name='Updated')
     
 
     REQUIRED_FIELDS = []
@@ -79,7 +83,7 @@ class Reply(models.Model):
     	verbose_name_plural = 'Replies'
 
     def __str__(self):
-        return self.title
+        return repr(self.id)
 
 
 class ReplyFile(models.Model):
@@ -95,4 +99,4 @@ class ReplyFile(models.Model):
     	verbose_name_plural = 'ReplyFiles'
 
     def __str__(self):
-        return self.reply_file
+        return repr(self.reply_file)

@@ -1,5 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
 from account.models import User
+
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm):

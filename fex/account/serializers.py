@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
+
 from account.models import User
-#from account.permissions import IsOwnerOnly
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -9,8 +9,8 @@ class GroupSerializer(serializers.ModelSerializer):
     	model = Group
     	fields = ['name']
 
-class UserSerializer(serializers.ModelSerializer):
 
+class UserSerializer(serializers.ModelSerializer):
 	
 	groups = GroupSerializer(many=True, read_only=True)
 	balance = serializers.IntegerField(default=0, read_only=True)
@@ -22,9 +22,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = User
-		fields = ['url', 'email', 'password', 'first_name', 'last_name', 'groups', 'is_active',
-				 'balance', 'freeze_balance', 'is_staff', 'date_joined', 'last_login']
-		#read_only_fields = ['groups']
+		fields = ['url', 'email', 'password', 'first_name', 'last_name', 
+		          'groups', 'is_active', 'balance', 'freeze_balance', 
+		          'is_staff', 'date_joined', 'last_login']
 
 	def create(self, *args, **kwargs):
 		user = super().create(*args, **kwargs)

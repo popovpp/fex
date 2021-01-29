@@ -2,6 +2,8 @@ from django.shortcuts import render
 # from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from rest_framework import permissions
+import rest_framework
+import copy
 
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
 from advert.serializers import ReplySerializer, ReplyFileSerializer
@@ -23,7 +25,7 @@ class AdvertViewSet(viewsets.ModelViewSet):
 	
 	def get_permissions(self):
 
-		read_only_set = {'author', 'status', 'created', 'updated'}
+		read_only_set = {'status', 'created', 'updated'}
 		permission_classes = [permissions.IsAuthenticated, ]
 
 		if self.request.method  in ['PUT', 'PATCH', 'POST']:
@@ -34,6 +36,18 @@ class AdvertViewSet(viewsets.ModelViewSet):
 				self.permission_classes = [IsOwnerOnly, ]
 
 		return super(AdvertViewSet, self).get_permissions()
+
+	def create(self, request, *args, **kwargs):
+
+		print(request.data)
+
+		instance = rest_framework.request.Request
+		instance.data = copy.deepcopy(request.data)
+		instance.data['author'] = self.request.user.id
+		
+		print(instance.data)
+
+		return super(AdvertViewSet, self).create(instance)
 
 
 class ReplyViewSet(viewsets.ModelViewSet):
@@ -50,7 +64,7 @@ class ReplyViewSet(viewsets.ModelViewSet):
 	
 	def get_permissions(self):
 
-		read_only_set = {'author', 'advert_id', 'created', 'updated'}
+		read_only_set = {'advert_id', 'created', 'updated'}
 		permission_classes = [permissions.IsAuthenticated, ]
 
 		if self.request.method  in ['PUT', 'PATCH', 'POST']:
@@ -63,6 +77,9 @@ class ReplyViewSet(viewsets.ModelViewSet):
 		return super(ReplyViewSet, self).get_permissions()
 
 	def create(self, request, *args, **kwargs):
-		self.request.data['author'] = self.request.user
-		print('ZZZZZZZZZZZZZZZZ')
-		return super().create(self, self.request, *args, **kwargs)
+
+		instance = rest_framework.request.Request
+		instance.data = copy.deepcopy(request.data)
+		instance.data['author'] = request.user.id
+
+		return super(ReplyViewSet, self).create(instance)

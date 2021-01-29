@@ -63,7 +63,7 @@ class Reply(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=True,
                           verbose_name='id')
     advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
-                                  verbose_name='advert_id', default=0)
+                                  verbose_name='Advert id')
     message = models.TextField(blank=True, verbose_name='Message')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                verbose_name='Author')

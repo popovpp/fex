@@ -2,18 +2,19 @@ from rest_framework import serializers
 
 from advert.models import Advert, Reply, AdvertFile, ReplyFile
 from account.models import User
-from account.serializers import UserSerializer
+#from account.serializers import UserSerializer
 
 
-#class UserSerializer(serializers.ModelSerializer):
-#    class Meta:
-#    	model = User
-#    	fields = ['email']
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+    	model = User
+    	fields = ['email']
 
 
 class AdvertSerializer(serializers.ModelSerializer):
 	
-#	author = UserSerializer(read_only=True)
+#	id = serializers.IntegerField(read_only=False)
+	author = User(UserSerializer()).email
 	status = serializers.CharField(read_only=True)
 	created = serializers.DateTimeField(read_only=True)
 	updated = serializers.DateTimeField(read_only=True)
@@ -27,13 +28,13 @@ class AdvertSerializer(serializers.ModelSerializer):
 
 class ReplySerializer(serializers.ModelSerializer):
 
-#	class AdvertSerializer(serializers.ModelSerializer):
-#		class Meta:
-#			model = Advert
-#			fields = ['id']
+	class AdvertSerializer(serializers.ModelSerializer):
+		class Meta:
+			model = Advert
+			fields = ['id']
 
-	advert_id = AdvertSerializer(read_only=True)
-	author = UserSerializer(read_only=True)
+	advert_id = Advert(AdvertSerializer()).id
+	author = User(UserSerializer()).email
 	created = serializers.DateTimeField(read_only=True)
 	updated = serializers.DateTimeField(read_only=True)
 

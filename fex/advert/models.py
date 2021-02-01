@@ -45,8 +45,8 @@ class AdvertFile(models.Model):
 
     id = models.AutoField(auto_created=True, primary_key=True, serialize=True,
                           verbose_name='ID')
-    advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
-                                  verbose_name='advert_id', default=0)
+#    advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
+#                                  verbose_name='advert_id', default=0)
     advert_file = models.FileField(upload_to=settings.MEDIA_ROOT, default='')
 
     class Meta:
@@ -55,7 +55,7 @@ class AdvertFile(models.Model):
 
 
     def __str__(self):
-        return repr(self.advert_file)
+        return repr(self.id)
 
 
 class Reply(models.Model):
@@ -63,7 +63,7 @@ class Reply(models.Model):
     id = models.AutoField(auto_created=True, primary_key=True, serialize=True,
                           verbose_name='id')
     advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
-                                  verbose_name='Advert id')
+                                  verbose_name='Advert id', null=True)
     message = models.TextField(blank=True, verbose_name='Message')
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                verbose_name='Author')
@@ -99,4 +99,4 @@ class ReplyFile(models.Model):
     	verbose_name_plural = 'ReplyFiles'
 
     def __str__(self):
-        return repr(self.reply_file)
+        return repr(self.id)

@@ -8,7 +8,8 @@ import copy
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
 from advert.serializers import ReplySerializer, ReplyFileSerializer
 from advert.models import Advert, Reply, AdvertFile, ReplyFile
-from advert.permissions import IsOwnerOnly
+from advert.permissions import IsOwnerOnly, IsOwnerOnlyForFile
+from advert.permissions import IsStaffOnly
 
 
 class AdvertViewSet(viewsets.ModelViewSet):
@@ -37,17 +38,12 @@ class AdvertViewSet(viewsets.ModelViewSet):
 
 		return super(AdvertViewSet, self).get_permissions()
 
-	def create(self, request, *args, **kwargs):
 
-		print(request.data)
+	def get_serializer_context(self):
+		context = super(AdvertViewSet, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
 
-		instance = rest_framework.request.Request
-		instance.data = copy.deepcopy(request.data)
-		instance.data['author'] = self.request.user.id
-		
-		print(instance.data)
-
-		return super(AdvertViewSet, self).create(instance)
 
 
 class ReplyViewSet(viewsets.ModelViewSet):
@@ -64,7 +60,7 @@ class ReplyViewSet(viewsets.ModelViewSet):
 	
 	def get_permissions(self):
 
-		read_only_set = {'advert_id', 'created', 'updated'}
+		read_only_set = {'author', 'created', 'updated'}
 		permission_classes = [permissions.IsAuthenticated, ]
 
 		if self.request.method  in ['PUT', 'PATCH', 'POST']:
@@ -76,10 +72,26 @@ class ReplyViewSet(viewsets.ModelViewSet):
 
 		return super(ReplyViewSet, self).get_permissions()
 
-	def create(self, request, *args, **kwargs):
+	def get_serializer_context(self):
+		context = super(ReplyViewSet, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
 
-		instance = rest_framework.request.Request
-		instance.data = copy.deepcopy(request.data)
-		instance.data['author'] = request.user.id
 
-		return super(ReplyViewSet, self).create(instance)
+class AdvertFileViewSet(viewsets.ModelViewSet):
+	"""
+	API endpoint that allows users to be created, viewed, edited or deleted.
+	"""	
+	serializer_class = AdvertFileSerializer
+	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
+
+	def get_queryset(self):
+
+		queryset = AdvertFile.objects.all().order_by('-id')
+		
+		return queryset
+	
+	def get_serializer_context(self):
+		context = super(AdvertFileViewSet, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context

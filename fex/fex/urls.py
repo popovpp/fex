@@ -6,12 +6,14 @@ from rest_framework.authtoken import views
 from account.views import UserViewSet
 from advert.views import AdvertViewSet
 from advert.views import ReplyViewSet
+from advert.views import AdvertFileViewSet
 
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, 'user')
 router.register(r'advert', AdvertViewSet, 'advert')
 router.register(r'reply', ReplyViewSet, 'reply')
+router.register(r'advertfile', AdvertFileViewSet, 'advertfile')
 
 
 urlpatterns = [

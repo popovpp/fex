@@ -94,22 +94,26 @@ class AdvertFileSerializer(serializers.ModelSerializer):
     		model = Advert
     		fields = ['id']
 
-#    advert_id = AdvertSerializer(read_only=True)
-    advert_file = serializers.FileField(read_only=True)
+#    advert_id = AdvertSerializer()
+#    advert_file = serializers.SerializerMethodField()
+    advert_file = serializers.FileField(use_url=True)
 
     class Meta:
     	model = AdvertFile
-#    	fields = ['url', 'id', 'advert_id', 'advert_file']
-    	fields = ['url', 'id', 'advert_file']
+    	fields = ['url', 'id', 'advert_id', 'advert_file']
 
-#    def create(self, *args, **kwargs):
-#    	advert_f = AdvertFile.objects.create(advert_id=Advert.objects.get(id=self.context['request'].
-#			                                 data['advert_id']['id']))
-#    	advert_f.advert_file = self.validated_data.get('advert_file', 
-#    		                                           self.context['request'].data['advert_file'])
-#    	print(self.context['request'].data['advert_file'])
-#    	advert_f.save()
-#    	return advert_f
+    def create(self, *args, **kwargs):
+
+        advert_f = AdvertFile.objects.create(advert_file=self.context['request'].data['advert_file'], 
+        	       advert_id=Advert.objects.get(id=self.context['request'].data['advert_id'][0][0]))
+        print(advert_f.advert_file)
+        advert_f.save()
+        return advert_f
+
+#    def get_advert_file(self, advert_file):
+#        request = self.context.get('request')
+#        advert_file = advertfile.advert_file
+#        return request.build_absolute_uri(advert_file)
 
 
 class ReplyFileSerializer(serializers.ModelSerializer):

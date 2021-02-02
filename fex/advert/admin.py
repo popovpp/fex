@@ -44,11 +44,11 @@ class ReplyFileModelAdmin(admin.ModelAdmin):
 
 
 class AdvertFileModelAdmin(admin.ModelAdmin):
-	list_display = ['id', 'advert_file']
-#	list_display = ['id', 'advert_id', 'advert_file']
+#	list_display = ['id', 'advert_file']
+	list_display = ['id', 'advert_id', 'advert_file']
 	list_display_links = ['id']
-#	list_filter = ['advert_id']
-#	search_fields = ['advert_id']
+	list_filter = ['advert_id']
+	search_fields = ['advert_id']
 
 	class Meta:
 		model = AdvertFile

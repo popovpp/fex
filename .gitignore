@@ -9,7 +9,7 @@ __pycache__/
 /fex/fex/__pycache__/*.*.*
 /fex/advert/__pycache__/*.*.*
 /fex/advert/__pycache__/*.*
-/fex/media_root/*.*
+/fex/media/*.*
 
 # C extensions
 *.so

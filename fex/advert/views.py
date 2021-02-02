@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import permissions
 import rest_framework
+from rest_framework.parsers import MultiPartParser, FormParser
 import copy
 
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
@@ -84,10 +85,13 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 	"""	
 	serializer_class = AdvertFileSerializer
 	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
+	parser_classes = (MultiPartParser, FormParser,)
 
 	def get_queryset(self):
 
 		queryset = AdvertFile.objects.all().order_by('-id')
+		for adv in queryset:
+			print(adv.advert_file)
 		
 		return queryset
 	

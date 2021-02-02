@@ -3,7 +3,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MEDIA_ROOT = BASE_DIR + '/media_root/'
+MEDIA_ROOT = BASE_DIR + '/media/'
+
+MEDIA_URL = '/media/'
 
 SECRET_KEY = 'zh)4@9vfgc04=kz^e93q77mn36!9p1hn@@qznj%%fpa1n-z8ap'
 
@@ -48,6 +50,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

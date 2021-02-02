@@ -45,8 +45,8 @@ class AdvertFile(models.Model):
 
     id = models.AutoField(auto_created=True, primary_key=True, serialize=True,
                           verbose_name='ID')
-#    advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
-#                                  verbose_name='advert_id', default=0)
+    advert_id = models.ForeignKey(Advert, on_delete=models.CASCADE,
+                                  verbose_name='advert_id', default=0)
     advert_file = models.FileField(upload_to=settings.MEDIA_ROOT, default='')
 
     class Meta:

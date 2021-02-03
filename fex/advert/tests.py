@@ -29,5 +29,4 @@ class AdvertFileViewSetTests(TestCase):
         files = {'advert_file': open('C:/gitone/MyBmp_1.bmp', 'rb')}
         data = {"advert_id": "1"}
         response = requests.post(self.uri_advert_file, files=files, data=data)
-        print(response.json())
         self.assertEqual(response.status_code, 201)

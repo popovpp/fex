@@ -1,10 +1,11 @@
 from django.shortcuts import render
-# from django.contrib.auth.models import Group
 from rest_framework import viewsets
 from rest_framework import permissions
 import rest_framework
 from rest_framework.parsers import MultiPartParser, FormParser
 import copy
+import os
+from django.conf import settings
 
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
 from advert.serializers import ReplySerializer, ReplyFileSerializer
@@ -90,8 +91,6 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 	def get_queryset(self):
 
 		queryset = AdvertFile.objects.all().order_by('-id')
-		for adv in queryset:
-			print(adv.advert_file)
 		
 		return queryset
 	
@@ -99,3 +98,10 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 		context = super(AdvertFileViewSet, self).get_serializer_context()
 		context.update({"request": self.request})
 		return context
+
+	def destroy(self, request, pk=None):
+
+		advert_f = AdvertFile.objects.get(id=pk)
+		full_file_name = settings.MEDIA_ROOT + '/' + advert_f.advert_file.name
+		os.remove(full_file_name)
+		return super(AdvertFileViewSet, self).destroy(self)

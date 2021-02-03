@@ -1,5 +1,6 @@
 from rest_framework import serializers
 import django.utils.timezone
+from os.path import basename
 
 from advert.models import Advert, Reply, AdvertFile, ReplyFile
 from account.models import User
@@ -94,8 +95,6 @@ class AdvertFileSerializer(serializers.ModelSerializer):
     		model = Advert
     		fields = ['id']
 
-#    advert_id = AdvertSerializer()
-#    advert_file = serializers.SerializerMethodField()
     advert_file = serializers.FileField(use_url=True)
 
     class Meta:
@@ -106,14 +105,10 @@ class AdvertFileSerializer(serializers.ModelSerializer):
 
         advert_f = AdvertFile.objects.create(advert_file=self.context['request'].data['advert_file'], 
         	       advert_id=Advert.objects.get(id=self.context['request'].data['advert_id'][0][0]))
-        print(advert_f.advert_file)
+        
+        advert_f.advert_file.name = basename(advert_f.advert_file.name)
         advert_f.save()
         return advert_f
-
-#    def get_advert_file(self, advert_file):
-#        request = self.context.get('request')
-#        advert_file = advertfile.advert_file
-#        return request.build_absolute_uri(advert_file)
 
 
 class ReplyFileSerializer(serializers.ModelSerializer):

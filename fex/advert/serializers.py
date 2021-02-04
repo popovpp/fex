@@ -110,12 +110,43 @@ class AdvertFileSerializer(serializers.ModelSerializer):
         advert_f.save()
         return advert_f
 
+    def update(self, pk, *args, **kwargs):
+
+        advert_f = AdvertFile.objects.get(id=pk.id)     
+        advert_f.advert_file = self.context['request'].data['advert_file']
+        advert_f.advert_file = basename(advert_f.advert_file.name)
+        print(advert_f.advert_file)
+        advert_f.save()
+        return advert_f
+
 
 class ReplyFileSerializer(serializers.ModelSerializer):
 	
-	reply_id = ReplySerializer(read_only=True)
-	reply_file = serializers.FileField(read_only=True)
+	class ReplySerializer(serializers.ModelSerializer):
+		class Meta:
+			model = Reply
+			fields = ['id']
+
+#	reply_id = ReplySerializer(read_only=True)
+	reply_file = serializers.FileField(use_url=True)
 
 	class Meta:
 		model = ReplyFile
 		fields = ['url', 'id', 'reply_id', 'reply_file']
+
+	def create(self, *args, **kwargs):
+
+		reply_f = ReplyFile.objects.create(reply_file=self.context['request'].data['reply_file'], 
+        	       reply_id=Reply.objects.get(id=self.context['request'].data['reply_id']))
+		reply_f.reply_file.name = basename(reply_f.reply_file.name)
+		reply_f.save()
+		return reply_f
+
+	def update(self, pk, *args, **kwargs):
+
+		reply_f = ReplyFile.objects.get(id=pk.id)     
+		reply_f.reply_file = self.context['request'].data['reply_file']
+		reply_f.reply_file = basename(reply_f.reply_file.name)
+		print(reply_f.reply_file)
+		reply_f.save()
+		return reply_f

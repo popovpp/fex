@@ -10,7 +10,8 @@ from django.conf import settings
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
 from advert.serializers import ReplySerializer, ReplyFileSerializer
 from advert.models import Advert, Reply, AdvertFile, ReplyFile
-from advert.permissions import IsOwnerOnly, IsOwnerOnlyForFile
+from advert.permissions import IsOwnerOnly, IsOwnerOnlyForAdvertFile
+from advert.permissions import IsOwnerOnly, IsOwnerOnlyForReplyFile
 from advert.permissions import IsStaffOnly
 
 
@@ -85,7 +86,7 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 	API endpoint that allows users to be created, viewed, edited or deleted.
 	"""	
 	serializer_class = AdvertFileSerializer
-	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
+#	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
 	parser_classes = (MultiPartParser, FormParser,)
 
 	def get_queryset(self):
@@ -103,5 +104,56 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 
 		advert_f = AdvertFile.objects.get(id=pk)
 		full_file_name = settings.MEDIA_ROOT + '/' + advert_f.advert_file.name
-		os.remove(full_file_name)
+		try:
+			os.remove(full_file_name)
+		except Exception as e:
+			print('File error:', e)
 		return super(AdvertFileViewSet, self).destroy(self)
+
+	def get_permissions(self):
+
+		self.permission_classes = (IsOwnerOnlyForAdvertFile | (IsStaffOnly&permissions.IsAuthenticated), )
+
+		if self.request.method  in ['PUT', 'PATCH', ]:
+			self.permission_classes = [permissions.IsAdminUser & (~permissions.IsAuthenticated), ]
+
+		return super(AdvertFileViewSet, self).get_permissions()
+
+
+class ReplyFileViewSet(viewsets.ModelViewSet):
+	"""
+	API endpoint that allows users to be created, viewed, edited or deleted.
+	"""	
+	serializer_class = ReplyFileSerializer
+#	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
+	parser_classes = (MultiPartParser, FormParser,)
+
+	def get_queryset(self):
+
+		queryset = ReplyFile.objects.all().order_by('-id')
+		
+		return queryset
+	
+	def get_serializer_context(self):
+		context = super(ReplyFileViewSet, self).get_serializer_context()
+		context.update({"request": self.request})
+		return context
+
+	def destroy(self, request, pk=None):
+
+		reply_f = ReplyFile.objects.get(id=pk)
+		full_file_name = settings.MEDIA_ROOT + '/' + reply_f.reply_file.name
+		try:
+			os.remove(full_file_name)
+		except Exception as e:
+			print('File error:', e)
+		return super(ReplyFileViewSet, self).destroy(self)
+
+	def get_permissions(self):
+
+		self.permission_classes = (IsOwnerOnlyForReplyFile | (IsStaffOnly&permissions.IsAuthenticated), )
+
+		if self.request.method  in ['PUT', 'PATCH', ]:
+			self.permission_classes = [permissions.IsAdminUser & (~permissions.IsAuthenticated), ]
+
+		return super(ReplyFileViewSet, self).get_permissions()

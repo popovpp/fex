@@ -9,6 +9,7 @@ from django.conf import settings
 
 from advert.serializers import AdvertSerializer, AdvertFileSerializer
 from advert.serializers import ReplySerializer, ReplyFileSerializer
+from advert.serializers import FullAdvertSerializer
 from advert.models import Advert, Reply, AdvertFile, ReplyFile
 from advert.permissions import IsOwnerOnly, IsOwnerOnlyForAdvertFile
 from advert.permissions import IsOwnerOnly, IsOwnerOnlyForReplyFile
@@ -41,12 +42,16 @@ class AdvertViewSet(viewsets.ModelViewSet):
 
 		return super(AdvertViewSet, self).get_permissions()
 
-
 	def get_serializer_context(self):
 		context = super(AdvertViewSet, self).get_serializer_context()
 		context.update({"request": self.request})
 		return context
 
+	def retrieve(self, request, pk=None):
+
+		self.serializer_class = FullAdvertSerializer
+
+		return super(AdvertViewSet, self).retrieve(self)
 
 
 class ReplyViewSet(viewsets.ModelViewSet):
@@ -86,7 +91,6 @@ class AdvertFileViewSet(viewsets.ModelViewSet):
 	API endpoint that allows users to be created, viewed, edited or deleted.
 	"""	
 	serializer_class = AdvertFileSerializer
-#	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
 	parser_classes = (MultiPartParser, FormParser,)
 
 	def get_queryset(self):
@@ -125,7 +129,6 @@ class ReplyFileViewSet(viewsets.ModelViewSet):
 	API endpoint that allows users to be created, viewed, edited or deleted.
 	"""	
 	serializer_class = ReplyFileSerializer
-#	permission_classes = (IsOwnerOnlyForFile | (IsStaffOnly&permissions.IsAuthenticated), )
 	parser_classes = (MultiPartParser, FormParser,)
 
 	def get_queryset(self):

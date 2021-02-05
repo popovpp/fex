@@ -12,7 +12,7 @@ class Advert(models.Model):
                           verbose_name='id')
     type_of_advert = tuple([(el.name, el.name)for el in Group.objects.all()])
     type_of_advert = models.CharField(max_length=50, choices=type_of_advert, 
-		                              default='', verbose_name='type of advert')
+		                                  default='', verbose_name='type of advert')
     title = models.CharField(blank=True, max_length=254,
                              verbose_name='Title')
     description = models.TextField(blank=True, verbose_name='Description')
@@ -29,7 +29,11 @@ class Advert(models.Model):
     updated = models.DateTimeField(auto_now=False, auto_now_add=True,
                                    verbose_name='Updated')
     active_until_date = models.DateTimeField(default=django.utils.timezone.now,
-                                   verbose_name='Active until data')
+                                             verbose_name='Active until data')
+    advert_file = models.ManyToManyField('AdvertFile', blank=True, 
+                                         verbose_name='Advert file', null=True)
+    rep = models.ManyToManyField('Reply', blank=True,
+                                 verbose_name='Reply', null=True)
 
     REQUIRED_FIELDS = []
 
@@ -74,6 +78,8 @@ class Reply(models.Model):
                                    verbose_name='Created')
     updated = models.DateTimeField(auto_now=False, auto_now_add=True,
                                    verbose_name='Updated')
+    rep_file = models.ManyToManyField('ReplyFile', blank=True,
+                                 verbose_name='Reply file', null=True)
     
 
     REQUIRED_FIELDS = []
